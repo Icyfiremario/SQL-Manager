@@ -1,10 +1,13 @@
 import sqlite3
 from sqlite3 import Error
 import sys
+import os
 
 userSel = 0
 querySel = 0
 customQuery = ""
+newName = ""
+delDatabase = ""
 
 curConnection = None
 database = None
@@ -12,6 +15,7 @@ create_users_table = "CREATE TABLE IF NOT EXISTS users ( id INTEGER PRIMARY KEY 
 create_users = "INSERT INTO users(name, age, gender, nationality) VALUES ('James', 15, 'male', 'USA'), ('Katelyn', 13, 'female', 'USA')"
 
 tables = None
+databases = os.listdir("databases")
 
 def create_connection(path):
     connection = None
@@ -42,9 +46,16 @@ def execute_read_query(connection, query):
     except Error as e:
         print(f"Error: {e}")
 
-while userSel != 4:
+def generate_database(name):
+    try:
+        sqlite3.connect(f"databases/{name}.db")
+        print(f"{name}.db created")
+    except Error as e:
+        print(f"Error: {e}")
+
+while userSel != 6:
     print("----Selection an Option----")
-    print("1. Connect to Database\n2. Execute query\n3. Show stored tables\n4. Exit\n")
+    print("1. Connect to Database\n2. Execute query\n3. Show stored tables\n4. Create new database\n5. delete database\n6. Exit\n")
 
     userSel = int(input())
     print("\n")
@@ -75,6 +86,21 @@ while userSel != 4:
             print("Not connected to database")
         else:
             print(tables)
+    elif userSel == 4:
+        print("New database name:\n")
+        newName = input()
+        generate_database(newName)
+    elif userSel == 5:
+        print("Select a database to delete\n")
+        print(databases)
+        delDatabase = input()
+        if os.path.exists(f"databases/{delDatabase}"):
+            os.remove(f"databases/{delDatabase}")
+        else:
+            print("Database doesn't exist")
+
+    elif userSel == 6:
+        break
     else:
         print("Not an option.")
 
