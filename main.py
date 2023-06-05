@@ -53,9 +53,9 @@ def generate_database(name):
     except Error as e:
         print(f"Error: {e}")
 
-while userSel != 6:
+while userSel != 7:
     print("----Selection an Option----")
-    print("1. Connect to Database\n2. Execute query\n3. Show stored tables\n4. Create new database\n5. delete database\n6. Exit\n")
+    print("1. Connect to Database\n2. Execute query\n3. Show stored tables\n4. Create new database\n5. delete database\n6. list databases\n7. Exit\n")
 
     userSel = int(input())
     print("\n")
@@ -92,14 +92,17 @@ while userSel != 6:
         generate_database(newName)
     elif userSel == 5:
         print("Select a database to delete\n")
-        print(databases)
+        print(f"{databases} \n")
         delDatabase = input()
         if os.path.exists(f"databases/{delDatabase}"):
             os.remove(f"databases/{delDatabase}")
         else:
             print("Database doesn't exist")
-
+    
     elif userSel == 6:
+        print(f"{databases} \n")
+
+    elif userSel == 7:
         break
     else:
         print("Not an option.")
